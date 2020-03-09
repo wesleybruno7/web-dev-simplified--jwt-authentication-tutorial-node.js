@@ -1,0 +1,35 @@
+# Observações:
+# o accessToken é utilizado no GET http://localhost:3000/posts para acessar os dados (json)
+# p refreshToken é utilizado no  POST http://localhost:4000/token para renovar o token expirado
+#
+
+# efetua o login e gera um token para o usuario enviado (expira em 15 seg, inicialmente expirado, precisa renovar o token usando o refreshToken) #
+POST http://localhost:4000/login
+Content-Type: application/json
+
+{
+"username": "Wesley"
+}
+
+###
+# Envia o refreshToken para o serverAuth para renovar o token (que expira em 15 seg)#
+POST http://localhost:4000/token
+Content-Type: application/json
+
+{
+"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiV2VzbGV5IiwiaWF0IjoxNTgzNzU2NjIzfQ.GOoxi2ncPjKHAnWs5Jrpc2l3G_fOqBjU9jWbJNbxN8A"
+}
+
+###
+# Realiza o get com o token que expira em 15 seg para puxar as informacoes (caso ja esteja expirado o token, retorna "Forbidden") #
+GET http://localhost:3000/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiV2VzbGV5IiwiaWF0IjoxNTgzNzU2ODk2LCJleHAiOjE1ODM3NTY5MTF9.tI9UeptpxlaVKu2A4EiFGlt7aVMF0ljAhps9RWF8J5o
+
+###
+#Remove o token expirado quando chamado, para que o retorno seja "Forbidden"#
+DELETE http://localhost:4000/logout
+Content-Type: application/json
+
+{
+"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiV2VzbGV5IiwiaWF0IjoxNTgzNzU2NjMxLCJleHAiOjE1ODM3NTY2NDZ9._PzdX5JMUKhm6YkMVa3kybOnqAr7nFttyJ71KJe4ed"
+}
